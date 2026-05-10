@@ -137,7 +137,7 @@ function App() {
       return "bg-slate-950";
     }
 
-    const condition = weather.weather[0].main;
+    const condition = weather?.weather?.[0]?.main;
 
     switch (condition) {
 
@@ -183,6 +183,8 @@ function App() {
     const recognition = new SpeechRecognition();
 
     recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.continuous = false;
 
     recognition.onresult = (event) => {
 
@@ -199,8 +201,8 @@ function App() {
 
     if (!weather) return;
 
-    const temp = weather.main.temp;
-    const condition = weather.weather[0].main;
+    const temp = weather?.main?.temp;
+    const condition = weather?.weather?.[0]?.main;
 
     let response = "";
 
@@ -228,7 +230,7 @@ function App() {
     } else {
 
       response =
-        `Current weather in ${weather.name} is ${condition} with ${Math.round(temp)} degrees Celsius.`;
+        `Current weather in ${weather?.name} is ${condition} with ${Math.round(temp)} degrees Celsius.`;
     }
 
     setAnswer(response);
@@ -357,25 +359,66 @@ function App() {
                 <div>
 
                   <h3 className="text-3xl md:text-4xl font-bold">
-                    {weather.name}
+                    {weather?.name}
                   </h3>
 
                   <p className="text-slate-200 mt-2 text-lg">
-                    {weather.weather[0].main}
+                    {weather?.weather?.[0]?.main}
                   </p>
 
                 </div>
 
                 <img
-                  src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                  src={`https://openweathermap.org/img/wn/${weather?.weather?.[0]?.icon}@2x.png`}
                   alt="weather"
                 />
 
               </div>
 
               <h1 className="text-5xl md:text-7xl font-bold mb-8 text-center md:text-left">
-                {Math.round(weather.main.temp)}°C
+                {Math.round(weather?.main?.temp)}°C
               </h1>
+
+              {/* Details */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <div className="bg-white/10 rounded-2xl p-5 text-center">
+
+                  <h4 className="text-slate-200 mb-2">
+                    Humidity
+                  </h4>
+
+                  <p className="text-3xl font-bold">
+                    {weather?.main?.humidity}%
+                  </p>
+
+                </div>
+
+                <div className="bg-white/10 rounded-2xl p-5 text-center">
+
+                  <h4 className="text-slate-200 mb-2">
+                    Wind Speed
+                  </h4>
+
+                  <p className="text-3xl font-bold">
+                    {weather?.wind?.speed} km/h
+                  </p>
+
+                </div>
+
+                <div className="bg-white/10 rounded-2xl p-5 text-center">
+
+                  <h4 className="text-slate-200 mb-2">
+                    Feels Like
+                  </h4>
+
+                  <p className="text-3xl font-bold">
+                    {Math.round(weather?.main?.feels_like)}°C
+                  </p>
+
+                </div>
+
+              </div>
 
             </div>
 
@@ -454,7 +497,7 @@ function App() {
 
                 <img
                   className="mx-auto"
-                  src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                  src={`https://openweathermap.org/img/wn/${item?.weather?.[0]?.icon}@2x.png`}
                   alt="forecast"
                 />
 
@@ -463,7 +506,7 @@ function App() {
                 </h1>
 
                 <p className="text-slate-200">
-                  {item.weather[0].main}
+                  {item?.weather?.[0]?.main}
                 </p>
 
               </div>
@@ -534,8 +577,8 @@ function App() {
                 <Marker position={[weather.coord.lat, weather.coord.lon]}>
 
                   <Popup>
-                    {weather.name} <br />
-                    {Math.round(weather.main.temp)}°C
+                    {weather?.name} <br />
+                    {Math.round(weather?.main?.temp)}°C
                   </Popup>
 
                 </Marker>
@@ -585,65 +628,69 @@ function App() {
         </div>
 
       </div>
-            {/* Footer */}
-<footer className="border-t border-white/10 mt-10">
 
-  <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+      {/* Footer */}
+      <footer className="border-t border-white/10 mt-10">
 
-    {/* Left */}
-    <div>
+        <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
 
-      <h2 className="text-2xl font-bold">
-        WeatherShield AI 🌦️
-      </h2>
+          {/* Left */}
+          <div>
 
-      <p className="text-slate-300 mt-2">
-        Smart Weather & Disaster Monitoring Platform
-      </p>
+            <h2 className="text-2xl font-bold">
+              WeatherShield AI 🌦️
+            </h2>
 
-    </div>
+            <p className="text-slate-300 mt-2">
+              Smart Weather & Disaster Monitoring Platform
+            </p>
 
-    {/* Center */}
-    <div className="flex gap-6 text-lg">
+          </div>
 
-      <a
-        href="https://github.com/Shivamani16"
-        target="_blank"
-        className="hover:text-blue-300 transition"
-      >
-        GitHub
-      </a>
+          {/* Center */}
+          <div className="flex gap-6 text-lg">
 
-      <a
-        href="https://linkedin.com/in/shivamani-kotagiri-1380a426a"
-        target="_blank"
-        className="hover:text-blue-300 transition"
-      >
-        LinkedIn
-      </a>
+            <a
+              href="https://github.com/Shivamani16"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-300 transition"
+            >
+              GitHub
+            </a>
 
-    </div>
+            <a
+              href="https://linkedin.com/in/shivamani-kotagiri-1380a426a"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-300 transition"
+            >
+              LinkedIn
+            </a>
 
-    {/* Right */}
-    <div>
+          </div>
 
-      <p className="text-slate-300 text-sm font-medium">
-        Designed & Developed by
-      </p>
+          {/* Right */}
+          <div>
 
-      <h3 className="text-lg font-bold mt-1">
-        Shivamani Kotagiri
-      </h3>
+            <p className="text-slate-300 text-sm font-medium">
+              Designed & Developed by
+            </p>
 
-      <p className="text-slate-500 text-sm mt-1">
-        © 2026 WeatherShield AI
-      </p>
+            <h3 className="text-lg font-bold mt-1">
+              Shivamani Kotagiri
+            </h3>
 
-    </div>
+            <p className="text-slate-500 text-sm mt-1">
+              © 2026 WeatherShield AI
+            </p>
 
-  </div>
+          </div>
 
-</footer>
+        </div>
+
+      </footer>
+
     </div>
   );
 }
